@@ -39,22 +39,23 @@ class Upload(Resource):
                 headers = row
                 continue
             data.append({key: value for key, value in zip(headers, row)})
-        print(type(data))
         for x in data:
+            import datetime
             name = x['*ContactName']
             invoice_number = x['*InvoiceNumber']
             invoice_date = x['*InvoiceDate']
+            invoice_date_time_obj = datetime.datetime.strptime(invoice_date.strip('\t\r\n'), '%d/%m/%Y')
             due_date = x['*DueDate']
+            due_date_time_obj=datetime.datetime.strptime(due_date.strip('\t\r\n'), '%d/%m/%Y')
             description = x['*Description']
             quantity = int(x['*Quantity'])
-            unit_amount = int((x['unit_amount']))
-            print(name)
+            unit_amount = int((x['*UnitAmount']))
 
             invoice_data = Invoice(**{
                 "contact_name": name,
                 "invoice_number": invoice_number,
-                "invoice_date": invoice_date,
-                "due_date": due_date,
+                "invoice_date": invoice_date_time_obj,
+                "due_date": due_date_time_obj,
                 "description": description,
                 "quantity": quantity,
                 "unit_amount": unit_amount,
