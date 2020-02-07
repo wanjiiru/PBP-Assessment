@@ -9,7 +9,6 @@ from app.config import config
 
 
 def create_app(environment='development'):
-
     app = Flask(__name__)
     setup_config(app)
     setup_extensions(app)
@@ -34,7 +33,6 @@ def create_app(environment='development'):
     return app
 
 
-
 def setup_extensions(app):
     DB.init_app(app)
     API.init_app(app)
@@ -46,9 +44,9 @@ def setup_config(app: Flask, testing=False):
         app.config.from_object(config.TestingConfig)
         app.config.from_object(config.ProductionConfig)
 
+
 #
 def setup_api():
     pass
-#     from messaging.api.resource import ns
-#
-#     API.add_namespace(ns, '/')
+    from app.api.resources import ns
+    API.add_namespace(ns, '/')
