@@ -12,6 +12,7 @@ POSTGRES = {
 
 class Config(object):
     DEBUG = False
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_DATABASE_URI = os.getenv('SQLALCHEMY_DATABASE_URI', 'postgresql://{user}:{pw}@{host}:{port}/{db}'.format(**POSTGRES))
 
 
@@ -27,7 +28,6 @@ class DevelopmentConfig(Config):
 class TestingConfig(Config):
     TESTING = True
     DEBUG = True
-
 
 
 

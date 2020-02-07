@@ -3,6 +3,8 @@ from flask import Flask
 from app.extensions import DB, API, migrate
 from werkzeug.middleware.proxy_fix import ProxyFix
 
+import app.models
+
 from app.config import config
 
 
