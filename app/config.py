@@ -1,19 +1,11 @@
 import os
+basedir = os.path.abspath(os.path.dirname(__file__))
 
-POSTGRES = {
-    'user': os.getenv('POSTGRES_USER', 'postgres'),
-    'pw': os.getenv('POSTGRES_PASSWORD', 'password'),
-    'db': os.getenv('POSTGRES_DB', 'sales'),
-    'host': os.getenv('POSTGRES_HOST', 'localhost'),
-    'port': os.getenv('POSTGRES_PORT', 5432)
-
-
-}
 
 class Config(object):
     DEBUG = False
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    SQLALCHEMY_DATABASE_URI = os.getenv('SQLALCHEMY_DATABASE_URI', 'postgresql://{user}:{pw}@{host}:{port}/{db}'.format(**POSTGRES))
+    SQLALCHEMY_DATABASE_URI ='postgresql://postgres:password@localhost:5432/sales'
 
 
 
