@@ -4,6 +4,6 @@ from flask_migrate import Migrate
 from flask_httpauth import HTTPBasicAuth
 
 DB = SQLAlchemy()
-API = Api(title='Sales App')
+API = Api(title=' App')
 migrate = Migrate()
 auth = HTTPBasicAuth()
