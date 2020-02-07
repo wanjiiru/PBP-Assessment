@@ -46,7 +46,7 @@ class Upload(Resource):
             invoice_date = x['*InvoiceDate']
             invoice_date_time_obj = datetime.datetime.strptime(invoice_date.strip('\t\r\n'), '%d/%m/%Y')
             due_date = x['*DueDate']
-            due_date_time_obj=datetime.datetime.strptime(due_date.strip('\t\r\n'), '%d/%m/%Y')
+            due_date_time_obj = datetime.datetime.strptime(due_date.strip('\t\r\n'), '%d/%m/%Y')
             description = x['*Description']
             quantity = int(x['*Quantity'])
             unit_amount = int((x['*UnitAmount']))
@@ -65,5 +65,22 @@ class Upload(Resource):
             DB.session.commit()
 
             return {
-                'status':'success'
-            },201
+                       'status': 'success'
+                   }, 201
+
+
+@ns.route('summary/topfivecustomers')
+class Summary(Resource):
+    def get(self):
+        top_five_customers = []
+
+        top_five = Invoice.query.order_by(Invoice.quantity.desc()).limit(5).all()
+        for i in top_five:
+            top_five_customers.append({
+                'name': i.contact_name,
+                'Quantity': i.quantity
+            })
+        return {
+            'status': 'success',
+            'Top Five Customers': top_five_customers
+        }
