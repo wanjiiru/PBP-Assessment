@@ -1,6 +1,6 @@
 from sqlalchemy_utils import generic_repr
 from sqlalchemy.sql import func
-from app.models import DB
+from salesapp.models import DB
 
 
 @generic_repr

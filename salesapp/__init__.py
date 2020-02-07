@@ -1,16 +1,19 @@
 from flask import Flask
+from salesapp.api import resources
 
-from app.extensions import DB, API, migrate
+from salesapp.extensions import DB, API, migrate
 from werkzeug.middleware.proxy_fix import ProxyFix
 
-from app.config import config
+from salesapp import config
 
 
-def create_app(environment='development'):
+
+
+def create_app():
     app = Flask(__name__)
     setup_config(app)
     setup_extensions(app)
-    from app import models
+    from salesapp import models
     setup_api()
 
     @app.before_request
@@ -41,11 +44,9 @@ def setup_extensions(app):
 def setup_config(app: Flask, testing=False):
     if testing:
         app.config.from_object(config.TestingConfig)
-        app.config.from_object(config.ProductionConfig)
+    app.config.from_object(config.ProductionConfig)
 
-
-#
 def setup_api():
-    pass
-    from app.api.resources import ns
+
+    from salesapp.api import ns
     API.add_namespace(ns, '/')

@@ -63,3 +63,7 @@ class Upload(Resource):
             })
             DB.session.add(invoice_data)
             DB.session.commit()
+
+            return {
+                'status':'success'
+            },201
