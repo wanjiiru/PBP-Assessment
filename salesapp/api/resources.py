@@ -84,3 +84,26 @@ class Summary(Resource):
             'status': 'success',
             'Top Five Customers': top_five_customers
         }
+
+
+@ns.route('summary/topfiveperyear')
+class SummaryPerYear(Resource):
+    def get(self):
+        top_five_in_2019 = []
+        top_five_in_2020 = []
+
+        x=Invoice.quantity*Invoice.unit_amount
+
+
+        top_five = Invoice.query.order_by(Invoice.quantity.desc()).limit(5).all()
+        for i in top_five:
+            if i.invoice_date <= '2019-12-31 00:00:00':
+                top_five_in_2019.append({
+                    'name': i.contact_name,
+                    'Quantity': i.quantity
+                })
+        return {
+            'status': 'success',
+            'year': '2019',
+            'Top Five Customers': top_five_in_2019
+        }

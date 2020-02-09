@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  asessment:
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: assessment
+    ports:
+      - 9000:9000
+    environment:
+      - APP_ENVIRONMENT=development
+
