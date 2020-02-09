@@ -2,7 +2,7 @@ import csv
 import io
 from io import StringIO
 
-from flask import request
+from flask import request, render_template
 from flask_restplus import Resource, Namespace
 from ..extensions import DB, auth
 import json
@@ -108,14 +108,13 @@ class SummaryPerYear(Resource):
         }
 
 
-from flask import render_template
-import tablib
-dataset = tablib.Dataset()
-with open('static/SalesInvoiceTemplate.csv') as f:
-    dataset.csv = f.read()
-
-@ns.route('/test')
 def index():
-    data = dataset.html
-    return render_template('templates/index.html', data=data)
+    import tablib
+    import pandas as pd
+    table =pd.read_csv('static/SalesInvoiceTemplate.csv')
+    return render_template('index.html',data=table.to_html)
 
+
+@ns.route('test')
+class Test(Resource):
+    index()

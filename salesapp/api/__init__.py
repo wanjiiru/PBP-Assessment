@@ -7,7 +7,7 @@ blueprint = Blueprint('api', __name__)
 
 api = Api(blueprint, doc='/docs', ui=False)
 
-api.add_namespace(ns, path='/sales')
+api.add_namespace(ns, path='/Sales')
 
 from .resources import Invoice
 

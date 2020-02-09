@@ -50,3 +50,4 @@ def setup_api():
 
     from salesapp.api import ns
     API.add_namespace(ns, '/')
+
