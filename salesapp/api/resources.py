@@ -92,8 +92,7 @@ class SummaryPerYear(Resource):
         top_five_in_2019 = []
         top_five_in_2020 = []
 
-        x=Invoice.quantity*Invoice.unit_amount
-
+        x = Invoice.quantity * Invoice.unit_amount
 
         top_five = Invoice.query.order_by(Invoice.quantity.desc()).limit(5).all()
         for i in top_five:
@@ -107,3 +106,16 @@ class SummaryPerYear(Resource):
             'year': '2019',
             'Top Five Customers': top_five_in_2019
         }
+
+
+from flask import render_template
+import tablib
+dataset = tablib.Dataset()
+with open('static/SalesInvoiceTemplate.csv') as f:
+    dataset.csv = f.read()
+
+@ns.route('/test')
+def index():
+    data = dataset.html
+    return render_template('templates/index.html', data=data)
+
