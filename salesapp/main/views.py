@@ -1,3 +1,4 @@
+import matplotlib
 from flask import render_template, redirect, url_for
 
 from . import main
@@ -47,3 +48,15 @@ def bar_graph():
     plt.savefig('salesapp/static/images/bar.png')
 
     return render_template('index.html', name='Bar Graph', url='/static/images/bar.png')
+
+
+@main.route('/table')
+def table():
+    import matplotlib.pyplot as plt
+    x = [2, 4, 6]
+    y = [1, 3, 5]
+    plt.plot(x, y)
+    # plt.show()
+    xx = plt.savefig('salesapp/static/images')
+    print(xx)
+    return render_template('index.html', name='Table', url='/static/images/table.png')
