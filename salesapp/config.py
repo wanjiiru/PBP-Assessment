@@ -26,6 +26,12 @@ class ProductionConfig(Config):
 
 class DevelopmentConfig(Config):
     DEBUG = True
+    SQLALCHEMY_DATABASE_URI = os.getenv('SQLALCHEMY_DATABASE_URI',
+                                        'postgresql://{user}:{pw}@{host}:{port}/{db}'.format(**POSTGRES))
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    SQLALCHEMY_BINDS = False
+    SIMPLEMDE_JS_IIFE = True
+    SIMPLEMDE_USE_CDN = True
 
 
 class TestingConfig(Config):
