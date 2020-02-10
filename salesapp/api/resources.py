@@ -1,14 +1,10 @@
 import csv
-import io
 from io import StringIO
 
-from flask import request, render_template
+from flask import render_template
 from flask_restplus import Resource, Namespace
+
 from ..extensions import DB, auth
-import json
-import traceback
-from ..extensions import DB, auth
-import re
 from werkzeug.datastructures import FileStorage
 
 from ..models import Invoice
@@ -108,13 +104,3 @@ class SummaryPerYear(Resource):
         }
 
 
-def index():
-    import tablib
-    import pandas as pd
-    table =pd.read_csv('static/SalesInvoiceTemplate.csv')
-    return render_template('index.html',data=table.to_html)
-
-
-@ns.route('test')
-class Test(Resource):
-    index()

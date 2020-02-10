@@ -1,6 +1,5 @@
 from .resources import ns
 from flask_restplus import Api, apidoc, Resource
-
 from flask import Blueprint
 
 blueprint = Blueprint('api', __name__)

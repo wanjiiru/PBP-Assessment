@@ -1,4 +1,7 @@
+
 import os
+SECRET_KEY = os.urandom(32)
+SECRET_KEY = SECRET_KEY
 POSTGRES = {
     'user': os.getenv('POSTGRES_USER', 'postgres'),
     'pw': os.getenv('POSTGRES_PASSWORD', 'password'),
@@ -13,6 +16,8 @@ class Config(object):
                                         'postgresql://{user}:{pw}@{host}:{port}/{db}'.format(**POSTGRES))
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_BINDS = False
+    SIMPLEMDE_JS_IIFE = True
+    SIMPLEMDE_USE_CDN = True
 
 
 class ProductionConfig(Config):
