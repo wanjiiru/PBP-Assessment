@@ -6,16 +6,18 @@ from werkzeug.datastructures import FileStorage
 
 from ..models import Invoice
 from salesapp.extensions import csrf
+
 ns = Namespace('Sales', description='sales endpoints')
 
 parser = ns.parser()
 parser.add_argument('file', location='files',
                     type=FileStorage, required=True)
 
+
 @csrf.exempt
 @ns.route('upload')
 class Upload(Resource):
-    @ns.expect(parser, validate=True,csrf=False)
+    @ns.expect(parser, validate=True, csrf=False)
     def post(self):
         args = parser.parse_args()
         uploaded_file = args['file']  # This is FileStorage instance
@@ -87,7 +89,8 @@ class SummaryPerYear(Resource):
 
         x = Invoice.quantity * Invoice.unit_amount
 
-        top_five = Invoice.query.order_by(Invoice.quantity.desc()).limit(5).all()
+        top_five = Invoice.query.order_by(Invoice.x.desc()).limit(5).all()
+        print(top_five)
         for i in top_five:
             if i.invoice_date <= '2019-12-31 00:00:00':
                 top_five_in_2019.append({
