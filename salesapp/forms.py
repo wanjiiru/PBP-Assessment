@@ -1,9 +1,5 @@
-from flask_wtf import FlaskForm, CSRFProtect
+from flask_wtf import FlaskForm, CSRFProtect, CsrfProtect
 from wtforms import SubmitField, FileField
-from wtforms.fields.html5 import URLField, EmailField
-from wtforms.validators import DataRequired
-
-# csrf = CSRFProtect()
 
 
 class UploadFileForm(FlaskForm):

@@ -1,29 +1,26 @@
 import csv
 from io import StringIO
-
-from flask import render_template
 from flask_restplus import Resource, Namespace
-
-from ..extensions import DB, auth
+from ..extensions import DB
 from werkzeug.datastructures import FileStorage
 
 from ..models import Invoice
-
+from salesapp.extensions import csrf
 ns = Namespace('Sales', description='sales endpoints')
 
 parser = ns.parser()
 parser.add_argument('file', location='files',
                     type=FileStorage, required=True)
 
-
+@csrf.exempt
 @ns.route('upload')
 class Upload(Resource):
-    @ns.expect(parser, validate=True)
+    @ns.expect(parser, validate=True,csrf=False)
     def post(self):
         args = parser.parse_args()
         uploaded_file = args['file']  # This is FileStorage instance
         if not uploaded_file:
-            return "No file"
+            return "No file provided"
         data = []
         stream = StringIO(uploaded_file.stream.read().decode('utf-8'), newline=None)
         reader = csv.reader(stream)
@@ -46,7 +43,7 @@ class Upload(Resource):
             description = x['*Description']
             quantity = int(x['*Quantity'])
             unit_amount = int((x['*UnitAmount']))
-
+            # save to invoice model
             invoice_data = Invoice(**{
                 "contact_name": name,
                 "invoice_number": invoice_number,
@@ -102,5 +99,3 @@ class SummaryPerYear(Resource):
             'year': '2019',
             'Top Five Customers': top_five_in_2019
         }
-
-
