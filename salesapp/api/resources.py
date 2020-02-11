@@ -1,6 +1,8 @@
 import csv
 from io import StringIO
 from flask_restplus import Resource, Namespace
+from sqlalchemy import and_
+
 from ..extensions import DB
 from werkzeug.datastructures import FileStorage
 
@@ -24,7 +26,7 @@ class Upload(Resource):
         if not uploaded_file:
             return "No file provided"
         data = []
-        stream = StringIO(uploaded_file.stream.read().decode('utf-8'), newline=None)
+        stream = StringIO(uploaded_file.stream.read().decode('utf-8'))
         reader = csv.reader(stream)
         i = 0
         headers = None
@@ -54,18 +56,20 @@ class Upload(Resource):
                 "description": description,
                 "quantity": quantity,
                 "unit_amount": unit_amount,
+                'total_amount': unit_amount * quantity
 
             })
             DB.session.add(invoice_data)
             DB.session.commit()
 
-            return {
-                       'status': 'success'
-                   }, 201
+        return {
+                   'status': 'success'
+               }, 201
 
 
 @ns.route('summary/topfivecustomers')
 class Summary(Resource):
+    # Returning the Top Five customers, according to Quantity bought.
     def get(self):
         top_five_customers = []
 
@@ -84,21 +88,42 @@ class Summary(Resource):
 @ns.route('summary/topfiveperyear')
 class SummaryPerYear(Resource):
     def get(self):
-        top_five_in_2019 = []
-        top_five_in_2020 = []
 
-        x = Invoice.quantity * Invoice.unit_amount
+        # Returning the Top Five customers according Total amount (quantity *unitAmount) due for a given year
+        results_2019 = []
+        results_2020 = []
+        # get first five in 2019
+        twenny_19 = Invoice.query.filter(Invoice.due_date <= '2019-12-31 00:00:00').order_by(
+            Invoice.total_amount.desc()).limit(5)
+        # get first in 2020
+        twenny_20 = Invoice.query.filter(Invoice.due_date <= '2020-12-31 00:00:00').order_by(
+            Invoice.total_amount.desc()).limit(5)
 
-        top_five = Invoice.query.order_by(Invoice.x.desc()).limit(5).all()
-        print(top_five)
-        for i in top_five:
-            if i.invoice_date <= '2019-12-31 00:00:00':
-                top_five_in_2019.append({
-                    'name': i.contact_name,
-                    'Quantity': i.quantity
-                })
+        for i in twenny_20:
+            results_2020.append({
+                'name': i.contact_name,
+                'Quantity': i.total_amount
+
+            })
+
+        for x in twenny_19:
+            results_2019.append({
+                'name': x.contact_name,
+                'Quantity': x.total_amount
+            })
+
         return {
             'status': 'success',
-            'year': '2019',
-            'Top Five Customers': top_five_in_2019
+            'Top five customers in 2019': results_2019,
+            'Top five Customers in 2020': results_2020
         }
+
+
+trx_parser = ns.parser()
+trx_parser.add_argument('date', required=False)
+
+
+@ns.route('summary/transactions/<string:date>')
+class Transactions(Resource):
+    def get(datee):
+        pass

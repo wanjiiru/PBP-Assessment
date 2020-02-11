@@ -13,6 +13,7 @@ class Invoice(BaseModel):
     description = DB.Column(DB.String(1000),nullable=False)
     quantity = DB.Column(DB.Integer,nullable=False)
     unit_amount = DB.Column(DB.Integer,nullable=False)
+    total_amount=DB.Column(DB.Integer)
 
 
 class InvoiceSchema(Schema):
