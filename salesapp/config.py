@@ -12,8 +12,9 @@ POSTGRES = {
 
 class Config(object):
     DEBUG = False
-    SQLALCHEMY_DATABASE_URI = os.getenv('SQLALCHEMY_DATABASE_URI',
+    SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL',
                                         'postgresql://{user}:{pw}@{host}:{port}/{db}'.format(**POSTGRES))
+
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_BINDS = False
     SIMPLEMDE_JS_IIFE = True
